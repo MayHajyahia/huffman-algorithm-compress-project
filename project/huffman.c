@@ -161,14 +161,11 @@ void unCompress(char *s) {
     free(ss);
 }
 void fileInfo(char *s) {
-    FILE *f = fopen(s, "rb");  // Open file in binary read mode
-
+    FILE *f = fopen(s, "rb");  
     if (!f) {
         perror("Cannot open file");
         return;
     }
-
-    // Check if the file is a Huffman file
     if (fgetc(f) != 67 || fgetc(f) != 147) {
         printf("The file type is not a Huffman file\n");
         fclose(f);
@@ -176,20 +173,14 @@ void fileInfo(char *s) {
     }
 
     printf("About %s:\n", s);
-
-    // Get the original file size
     int fs = 0;
     fseek(f, 3, SEEK_SET);
     fread(&fs, sizeof(int), 1, f);
     printf("Original file size: %d bytes\n", fs);
-
-    // Get the compressed file size
     int ns = 0;
     fseek(f, 7, SEEK_SET);
     fread(&ns, sizeof(int), 1, f);
     printf("File size after compression: %d bytes\n", ns);
-
-    // Get the operating system information
     char os;
     fseek(f, 2, SEEK_SET); 
     fread(&os, sizeof(char), 1, f);
